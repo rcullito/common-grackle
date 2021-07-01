@@ -25,6 +25,21 @@
 (defun describe-paths (location edges)
   (apply #'append (mapcar #'describe-path (cdr (assoc location edges)))))
 
-;; cdr will always return a list, so we need another car on top of that to get the actual element
-(cadr (assoc 'frog *object-locations*))
+(defun objects-at (loc objs obj-locs)
+  (labels ((at-loc-p (obj)
+             (eq (cadr (assoc obj obj-locs)) loc)))
+    (remove-if-not #'at-loc-p objs)))
 
+
+(cadr (assoc 'whiskey *object-locations*))
+
+(objects-at 'garden *objects* *object-locations*)
+
+
+
+(defun describe-objects (loc objs obj-locs)
+  (labels ((describe-obj (obj)
+             `(you see a ,obj on the floor.)))
+    (apply #'append (mapcar #'describe-obj (objects-at loc objs obj-locs)))))
+
+(describe-objects 'garden *objects* *object-locations*)
