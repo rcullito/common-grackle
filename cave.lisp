@@ -57,4 +57,11 @@
   (append (connect-with-bridges (find-islands nodes edge-list)) edge-list))
 
 
-
+(defun make-city-edges ()
+  (let* ((nodes (loop for i to *node-num*
+                      collect i))
+         (edge-list (connect-all-islands nodes (make-edge-list)))
+         (cops (remove-if-not (lambda (x)
+                                (zerop (random *cop-odds*)))
+                              edge-list)))
+    (add-cops (edges-to-alist edge-list) cops)))
